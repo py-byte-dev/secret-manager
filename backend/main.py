@@ -17,6 +17,7 @@ from backend.application.use_cases.secret import CheckSecretExpirationInteractor
 from backend.config import Config
 from backend.infrastructure.services.periodic_task import periodic_task
 from backend.presentation.api.exceptions_mapping import EXCEPTIONS_MAPPING
+from backend.presentation.api.middlewares.no_cache import NoCacheMiddleware
 from backend.presentation.api.routers import router
 
 config = Config()
@@ -72,6 +73,8 @@ def create_app(
         allow_methods=['*'],
         allow_headers=['*'],
     )
+
+    app.add_middleware(NoCacheMiddleware)
 
     fastapi_integration.setup_dishka(container, app)
     return app
